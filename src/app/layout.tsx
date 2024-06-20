@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { getLocale } from "@/i18n/server";
+import { LocaleProvider } from "@/hooks/locale-provider";
+import ChangeLocale from "@/components/ChangeLanguages";
+import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,9 +18,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = getLocale();
+
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang={locale}>
+      <body className={inter.className}>
+        <LocaleProvider value={locale}>
+          <Header />
+          <main className="min-h-svh flex justify-center items-center">
+            {children}
+          </main>
+        </LocaleProvider>
+      </body>
     </html>
   );
 }
